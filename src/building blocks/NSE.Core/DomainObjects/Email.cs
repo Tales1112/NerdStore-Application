@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System;
+using System.Net.Mail;
 
 namespace NSE.Core.DomainObjects
 {
@@ -19,8 +20,15 @@ namespace NSE.Core.DomainObjects
         }
         public static bool Validar(string email)
         {
-            var regexEmail = new Regex(@"/^[a-z0-9.]+@[a-z0-9]+\.[a-z]+\.([a-z]+)?$/i");
-            return regexEmail.IsMatch(email);
+            try
+            {
+                MailAddress m = new MailAddress(email);
+                return true;
+            }
+            catch (FormatException)
+            {
+                return false;
+            }
         }
     }
 }
