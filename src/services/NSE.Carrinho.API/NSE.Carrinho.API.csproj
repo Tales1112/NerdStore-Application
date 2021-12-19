@@ -13,10 +13,6 @@
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="5.3.3" />
 	</ItemGroup>
 	<ItemGroup>
-	  <Folder Include="Data\" />
-	  <Folder Include="Model\" />
-	</ItemGroup>
-	<ItemGroup>
 	  <ProjectReference Include="..\..\building blocks\NSE.WEbApi.Core\NSE.WEbApi.Core.csproj" />
 	</ItemGroup>
 </Project>

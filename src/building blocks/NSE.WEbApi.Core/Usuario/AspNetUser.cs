@@ -3,20 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Security.Claims;
 
-namespace NSE.WebApp.MVC.Extensions
+namespace NSE.WEbApi.Core.Usuario
 {
-    public interface IUser
-    {
-        string Name { get; }
-        Guid ObterUserId();
-        string ObterUserEmail();
-        string ObterUserToken();
-        bool EstaAutenticado();
-        bool PossuiRole(string role);
-        IEnumerable<Claim> ObterClaims();
-        HttpContext ObterHttpContext();
-    }
-    public partial class AspNetUser : IUser
+    public partial class AspNetUser : IAspNetUser
     {
         private readonly IHttpContextAccessor _accessor;
 

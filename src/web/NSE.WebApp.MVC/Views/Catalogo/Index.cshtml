@@ -20,7 +20,7 @@
                         <div class="col-md-3">
                             <div href="#" class="card card-product-grid">
                                 <a asp-controller="Catalogo" asp-action="ProdutoDetalhe" asp-route-id="@produto.Id" class="img-wrap">
-                                    <img src="@Url.Content("~/images/produtos/camiseta1.jpg")" alt="@produto.Nome">
+                                    <img src="~/images/produtos/@produto.Imagem" alt="@produto.Nome">
                                 </a>
                                 <figcaption class="info-wrap">
                                     <a asp-controller="Catalogo" asp-action="ProdutoDetalhe" asp-route-id="@produto.Id" class="title">

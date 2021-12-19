@@ -45,6 +45,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MessageBus", "MessageBus", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NSE.MessageBus", "src\building blocks\NSE.MessageBus\NSE.MessageBus.csproj", "{7E000188-2F34-41C4-9A84-763B1827B35D}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NSE.WebApp.MVC", "src\web\NSE.WebApp.MVC\NSE.WebApp.MVC.csproj", "{AEADC610-7FA6-4610-8EE3-F20C319C75DB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -87,6 +89,10 @@ Global
 		{7E000188-2F34-41C4-9A84-763B1827B35D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7E000188-2F34-41C4-9A84-763B1827B35D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7E000188-2F34-41C4-9A84-763B1827B35D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AEADC610-7FA6-4610-8EE3-F20C319C75DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AEADC610-7FA6-4610-8EE3-F20C319C75DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AEADC610-7FA6-4610-8EE3-F20C319C75DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AEADC610-7FA6-4610-8EE3-F20C319C75DB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
