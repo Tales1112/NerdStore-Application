@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 namespace NSE.Carrinho.API.Controllers
 {
     [Authorize]
+    [Route("api/[Controller]")]
     public class CarrinhoController : MainController
     {
         private readonly IAspNetUser _user;
