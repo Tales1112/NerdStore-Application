@@ -55,10 +55,10 @@ namespace NSE.MessageBus
             _bus.PubSub.Subscribe(subscriptionId, onMessage);
         }
 
-        public void Subscribe<T>(string subscriptionId, Func<T, Task> onMessage) where T : class
+        public void SubscribeAsync<T>(string subscriptionId, Func<T, Task> onMessage) where T : class
         {
             TryConnect();
-            _bus.PubSub.Subscribe(subscriptionId, onMessage);
+            _bus.PubSub.SubscribeAsync(subscriptionId, onMessage);
         }
 
         public IDisposable Respond<TRequest, TResponse>(Func<TRequest, TResponse> responder)

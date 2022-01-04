@@ -77,7 +77,7 @@ namespace NSE.Identidade.API.Controllers
             {
                 return await _Bus.RequestAsync<UsuarioRegistradoIntegrationEvent, ResponseMessage>(usuarioRegistrado);
             }
-            catch(Exception ex)
+            catch(Exception)
             {
 
                 await _userManager.DeleteAsync(usuario);

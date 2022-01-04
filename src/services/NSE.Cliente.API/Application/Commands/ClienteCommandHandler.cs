@@ -8,7 +8,8 @@ using System.Threading.Tasks;
 
 namespace NSE.Cliente.API.Application.Commands
 {
-    public class ClienteCommandHandler : CommandHandler, IRequestHandler<RegistarClienteCommand, ValidationResult>
+    public class ClienteCommandHandler : CommandHandler, IRequestHandler<RegistarClienteCommand, ValidationResult>,
+                                                         IRequestHandler<AdicionarEnderecoCommand, ValidationResult>
     {
         private readonly IClienteRepository _clienteRepository;
         public ClienteCommandHandler(IClienteRepository clienteRepository)
@@ -32,6 +33,16 @@ namespace NSE.Cliente.API.Application.Commands
             _clienteRepository.Adicionar(cliente);
 
             cliente.AdicionarEvento(new ClienteRegistradoEvent(message.Id, message.Nome, message.Email, message.Cpf));
+
+            return await PersistirDados(_clienteRepository.UnitOfWork);
+        }
+
+        public async Task<ValidationResult> Handle(AdicionarEnderecoCommand message, CancellationToken cancellationToken)
+        {
+            if (!message.EhValido()) return message.ValidationResult;
+
+            var endereco = new Endereco(message.Logradouro, message.Numero, message.Complemento, message.Bairro, message.Cep, message.Cidade, message.Estado);
+            _clienteRepository.AdicionarEndereco(endereco);
 
             return await PersistirDados(_clienteRepository.UnitOfWork);
         }

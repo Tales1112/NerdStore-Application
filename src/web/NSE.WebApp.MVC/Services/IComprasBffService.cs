@@ -12,5 +12,6 @@ namespace NSE.WebApp.MVC.Services
         Task<ResponseResult> AtualizarItemCarrinho(Guid produtoId, ItemCarrinhoViewModel produto);
         Task<CarrinhoViewModel> ObterCarrinho();
         Task<ResponseResult> RemoverItemCarrinho(Guid produtoId);
+        Task<ResponseResult> AplicarVoucherCarrinho(string voucher);
     }
 }
