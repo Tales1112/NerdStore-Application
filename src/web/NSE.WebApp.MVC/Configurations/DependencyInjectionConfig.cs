@@ -37,14 +37,18 @@ namespace NSE.WebApp.MVC.Configurations
                 .AddPolicyHandler(PollyExtensions.EsperarTentar())
                 .AddTransientHttpErrorPolicy(p => p.CircuitBreakerAsync(5, TimeSpan.FromSeconds(30)));
 
+            services.AddHttpClient<IClienteService, ClienteService>()
+               .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
+               .AddPolicyHandler(PollyExtensions.EsperarTentar())
+               .AddTransientHttpErrorPolicy(p => p.CircuitBreakerAsync(5, TimeSpan.FromSeconds(30)));
+
+
             //.AddTransientHttpErrorPolicy(p => p.WaitAndRetryAsync(3, _ => TimeSpan.FromMilliseconds(600)));
             services.AddHttpClient("Refit", options =>
              {
                  options.BaseAddress = new Uri(configuration.GetSection("CatalogoUrl").Value);
              }).AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
             .AddTypedClient(Refit.RestService.For<ICatalogoServiceRefit>);
-
-
         }
     }
     public static class PollyExtensions
