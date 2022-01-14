@@ -37,6 +37,14 @@ namespace NSE.Pedidos.Domain.Pedidos
         {
             PedidosStatus = PedidoStatus.Autorizado;
         }
+        public void CancelarPedido()
+        {
+            PedidosStatus = PedidoStatus.Cancelado;
+        }
+        public void FinalizarPedido()
+        {
+            PedidosStatus = PedidoStatus.Pago;
+        }
         public void AtribuirVoucher(Voucher voucher)
         {
             VoucherUtilizado = true;

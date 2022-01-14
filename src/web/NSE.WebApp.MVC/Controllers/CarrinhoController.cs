@@ -11,12 +11,9 @@ namespace NSE.WebApp.MVC.Controllers
     public class CarrinhoController : MainController
     {
         private readonly IComprasBffService _comprasBffService;
-        private readonly ICatalogoService _catalogoService;
-
-        public CarrinhoController(IComprasBffService comprasBffService, ICatalogoService catalogoService)
+        public CarrinhoController(IComprasBffService comprasBffService)
         {
             _comprasBffService = comprasBffService;
-            _catalogoService = catalogoService;
         }
         [Route("carrinho")]
         public async Task<IActionResult> Index()
