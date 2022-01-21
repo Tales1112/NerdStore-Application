@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Dapper;
+using Microsoft.EntityFrameworkCore;
 using NSE.Catalogo.API.Models;
 using NSE.Core.Data;
 using System;
@@ -32,9 +33,30 @@ namespace NSE.Catalogo.API.Data.Repository
             return await _context.Produtos.AsNoTracking()
                 .Where(p => idsValue.Contains(p.Id) && p.Ativo).ToListAsync();
         }
-        public async Task<IEnumerable<Produto>> ObterTodos()
+        public async Task<PagedResult<Produto>> ObterTodos(int pagesize, int pageIndex, string query = null)
         {
-            return await _context.Produtos.AsNoTracking().ToListAsync();
+            var sql = $@"SELECT * FROM produtos 
+                         WHERE (@Nome IS NULL OR Nome LIKE '%' + @Nome + '%')
+                         ORDER BY[NOME]
+                         OFFSET {pagesize * (pageIndex - 1)} ROWS
+                         FETCH NEXT {pagesize} ROWS ONLY
+                         SELECT COUNT(Id) FROM Produtos
+                         WHERE (@Nome IS NULL OR Nome LIKE '%' + @Nome + '%')";
+
+            var multi = await _context.Database.GetDbConnection()
+                .QueryMultipleAsync(sql, new { Nome = query });
+
+            var produtos = multi.Read<Produto>();
+            var total = multi.Read<int>().FirstOrDefault();
+
+            return new PagedResult<Produto>()
+            {
+                List = produtos,
+                TotalResults = total,
+                PageIndex = pageIndex,
+                PageSize = pagesize,
+                Query = query
+            };
         }
         public void Adicionar(Produto produto)
         {

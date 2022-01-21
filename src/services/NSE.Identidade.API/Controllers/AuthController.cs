@@ -1,19 +1,21 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using FluentValidation.Results;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using NetDevPack.Security.Jwt.Interfaces;
+using NSE.Core.Messages.Integration;
 using NSE.Identidade.API.Model;
+using NSE.MessageBus;
+using NSE.WEbApi.Core.Controllers;
+using NSE.WEbApi.Core.Identidade;
+using NSE.WEbApi.Core.Usuario;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
-using System.Text;
 using System.Threading.Tasks;
-using NSE.WEbApi.Core.Identidade;
-using NSE.WEbApi.Core.Controllers;
-using NSE.Core.Messages.Integration;
-using NSE.MessageBus;
 
 namespace NSE.Identidade.API.Controllers
 {
@@ -24,15 +26,21 @@ namespace NSE.Identidade.API.Controllers
         private readonly UserManager<IdentityUser> _userManager;
         private readonly AppSettings _appSettings;
         private readonly IMessageBus _Bus;
+        private readonly IAspNetUser _aspNetUser;
+        private readonly IJsonWebKeySetService _jwksService;
         public AuthController(SignInManager<IdentityUser> signInManager,
                               UserManager<IdentityUser> userManager,
                               IOptions<AppSettings> appSettings,
-                              IMessageBus bus)
+                              IMessageBus bus,
+                              IAspNetUser aspNetUser,
+                              IJsonWebKeySetService jwksService)
         {
             _signInManager = signInManager;
             _userManager = userManager;
             _appSettings = appSettings.Value;
             _Bus = bus;
+            _aspNetUser = aspNetUser;
+            _jwksService = jwksService;
         }
         [HttpPost("nova-conta")]
         public async Task<IActionResult> Registrar(UsuarioRegistro usuarioRegistro)
@@ -72,17 +80,19 @@ namespace NSE.Identidade.API.Controllers
             var usuario = await _userManager.FindByEmailAsync(usuarioRegistro.Email);
 
             var usuarioRegistrado = new UsuarioRegistradoIntegrationEvent(Guid.Parse(usuario.Id), usuarioRegistro.Nome, usuarioRegistro.Email, usuarioRegistro.Cpf);
+            await _userManager.CreateAsync(usuario);
 
-            try
-            {
-                return await _Bus.RequestAsync<UsuarioRegistradoIntegrationEvent, ResponseMessage>(usuarioRegistrado);
-            }
-            catch(Exception)
-            {
+            return new ResponseMessage(new ValidationResult());
+            //try
+            //{
+            //    return await _Bus.RequestAsync<UsuarioRegistradoIntegrationEvent, ResponseMessage>(usuarioRegistrado);
+            //}
+            //catch(Exception)
+            //{
 
-                await _userManager.DeleteAsync(usuario);
-                throw;
-            }
+            //    await _userManager.DeleteAsync(usuario);
+            //    throw;
+            //}
         }
         [HttpPost("autenticar")]
         public async Task<IActionResult> Login(UsuarioLogin usuarioLogin)
@@ -139,15 +149,19 @@ namespace NSE.Identidade.API.Controllers
         private string CodificarToken(ClaimsIdentity identityClaims)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var Key = Encoding.ASCII.GetBytes(_appSettings.Secret);
+            var currentIssuer = $"{_aspNetUser.ObterHttpContext().Request.Scheme}://{_aspNetUser.ObterHttpContext().Request.Host}";
 
+            var Key = _jwksService.GenerateSigningCredentials();
             var token = tokenHandler.CreateToken(new SecurityTokenDescriptor
             {
-                Issuer = _appSettings.Emissor,
-                Audience = _appSettings.ValidoEm,
+                Issuer = currentIssuer,
+                // A onde o token for valido ele podera ser usado.
+                //Audience = _appSettings.ValidoEm, 
                 Subject = identityClaims,
-                Expires = DateTime.UtcNow.AddHours(_appSettings.ExpiracaoHoras),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Key), SecurityAlgorithms.HmacSha256Signature)
+                Expires = DateTime.UtcNow.AddHours(1),
+                // Seguranca Simetrica
+                //SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Key), SecurityAlgorithms.HmacSha256Signature)
+                SigningCredentials = Key
             });
 
             return tokenHandler.WriteToken(token);
@@ -157,7 +171,7 @@ namespace NSE.Identidade.API.Controllers
             return new UsuarioRespostaLogin
             {
                 AccessToken = encodedToken,
-                ExpiresIn = TimeSpan.FromHours(_appSettings.ExpiracaoHoras).TotalSeconds,
+                ExpiresIn = TimeSpan.FromHours(1).TotalSeconds,
                 UsuarioToken = new UsuarioToken
                 {
                     Id = user.Id,
