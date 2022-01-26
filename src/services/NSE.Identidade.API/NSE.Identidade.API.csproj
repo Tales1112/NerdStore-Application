@@ -33,9 +33,5 @@
 	  <ProjectReference Include="..\..\building blocks\NSE.WEbApi.Core\NSE.WEbApi.Core.csproj" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <Folder Include="Extensions\" />
-	</ItemGroup>
-
 
 </Project>

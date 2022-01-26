@@ -1,8 +1,12 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Protos\carrinho.proto" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\building blocks\NSE.Core\NSE.Core.csproj" />
@@ -11,8 +15,16 @@
   </ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="Grpc.Tools" Version="2.31.0">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="5.3.3" />
 		<PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.2"></PackageReference>
+		<PackageReference Include="Google.Protobuf" Version="3.12.4"></PackageReference>
+		<PackageReference Include="Grpc.Net.ClientFactory" Version="2.30.0"></PackageReference>
 	</ItemGroup>
-
+	<ItemGroup>
+		<Protobuf Include="Protos\carrinho.proto" GrpcServices="Client" />
+	</ItemGroup>
 </Project>
