@@ -53,11 +53,11 @@ namespace NSE.WebApp.MVC.Controllers
 
             var resposta = await _autenticacaoService.Login(usuarioLogin);
 
-            if (!ResponsePossuiErros(resposta.ResponseResult)) return View(usuarioLogin);
+            if (ResponsePossuiErros(resposta.ResponseResult)) return View(usuarioLogin);
 
             await _autenticacaoService.RealizarLogin(resposta);
 
-            if (string.IsNullOrEmpty(returnUrl)) return RedirectToPage("Index", "Catalogo");
+            if (string.IsNullOrEmpty(returnUrl)) return RedirectToAction("Index", "Catalogo");
             
             return LocalRedirect(returnUrl);
         }

@@ -41,12 +41,12 @@ namespace NSE.MessageBus
             return _bus.Rpc.Request<TRequest, TResponse>(request);
         }
 
-        public Task<TResponse> RequestAsync<TRequest, TResponse>(TRequest request)
+        public async Task<TResponse> RequestAsync<TRequest, TResponse>(TRequest request)
             where TRequest : IntegrationEvent
             where TResponse : ResponseMessage
         {
             TryConnect();
-            return _bus.Rpc.RequestAsync<TRequest, TResponse>(request);
+            return await _bus.Rpc.RequestAsync<TRequest, TResponse>(request);
         }
 
         public void Subscribe<T>(string subscriptionId, Action<T> onMessage) where T : class
@@ -55,10 +55,10 @@ namespace NSE.MessageBus
             _bus.PubSub.Subscribe(subscriptionId, onMessage);
         }
 
-        public void SubscribeAsync<T>(string subscriptionId, Func<T, Task> onMessage) where T : class
+        public async void SubscribeAsync<T>(string subscriptionId, Func<T, Task> onMessage) where T : class
         {
             TryConnect();
-            _bus.PubSub.SubscribeAsync(subscriptionId, onMessage);
+            await _bus.PubSub.SubscribeAsync(subscriptionId, onMessage);
         }
 
         public IDisposable Respond<TRequest, TResponse>(Func<TRequest, TResponse> responder)

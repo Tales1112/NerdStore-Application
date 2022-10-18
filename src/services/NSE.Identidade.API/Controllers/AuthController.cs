@@ -103,9 +103,7 @@ namespace NSE.Identidade.API.Controllers
             var usuario = await _authenticationService._userManager.FindByEmailAsync(usuarioRegistro.Email);
 
             var usuarioRegistrado = new UsuarioRegistradoIntegrationEvent(Guid.Parse(usuario.Id), usuarioRegistro.Nome, usuarioRegistro.Email, usuarioRegistro.Cpf);
-            await _authenticationService._userManager.CreateAsync(usuario);
 
-            //return new ResponseMessage(new ValidationResult());
             try
             {
                 return await _Bus.RequestAsync<UsuarioRegistradoIntegrationEvent, ResponseMessage>(usuarioRegistrado);

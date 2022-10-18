@@ -14,8 +14,8 @@ namespace NSE.WebApp.MVC.Controllers
                 {
                     ModelState.AddModelError(string.Empty, mensagem);
                 }
+                return true;
             }
-
             return false;
         }
         protected void AdicionarErroValidacao(string message)

@@ -13,7 +13,7 @@ namespace NSE.WebApp.MVC.Services
         {
             return new StringContent(JsonSerializer.Serialize(dado),
                                                    Encoding.UTF8,
-                                                   "application/json");
+                                                  "application/json");
         }
         protected async Task<T> DeserializarObjetoResponse<T> (HttpResponseMessage responseMessage)
         {

@@ -56,7 +56,6 @@ namespace NSE.Cliente.API.Services
                 throw;
             }
           
-
             return new ResponseMessage(sucesso);
         }
     }

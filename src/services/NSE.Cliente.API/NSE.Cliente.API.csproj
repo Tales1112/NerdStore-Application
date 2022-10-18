@@ -2,6 +2,9 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UserSecretsId>e2fd40e9-50be-404a-8ec3-5bed86c50ad8</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerfileContext>..\..\..</DockerfileContext>
   </PropertyGroup>
 
   <ItemGroup>
@@ -18,6 +21,7 @@
 	  <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="3.1.3" />
 	  <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.3" />
 	  <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.3" />
+	  <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.14.0" />
 	  <PackageReference Include="Swashbuckle.AspNetCore" Version="5.3.3" />
   </ItemGroup>
 

@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 namespace NSE.Cliente.API.Controllers
 {
     [Route("api/[controller]")]
-    [ApiController]
     public class ClienteController : MainController
     {
         private readonly IClienteRepository _clienteRepository;

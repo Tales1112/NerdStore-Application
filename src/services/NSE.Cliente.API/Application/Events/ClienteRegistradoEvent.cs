@@ -17,6 +17,5 @@ namespace NSE.Cliente.API.Application.Events
             Email = email;
             Cpf = cpf;
         }
-
     }
 }

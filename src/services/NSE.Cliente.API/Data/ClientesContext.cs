@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿
+using Microsoft.EntityFrameworkCore;
 using NSE.Core.Data;
 using NSE.Cliente.API.Models;
 using System.Linq;
